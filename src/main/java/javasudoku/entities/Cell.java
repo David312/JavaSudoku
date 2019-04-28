@@ -1,5 +1,7 @@
 package javasudoku.entities;
 
+import javasudoku.exceptions.InvalidCellValueException;
+
 public class Cell {
   public static final int MIN_VALUE = 0;
   public static final int MAX_VALUE = 9;
@@ -20,7 +22,7 @@ public class Cell {
 
   private void checkValue(int value) {
     if (value < MIN_VALUE || value > MAX_VALUE) {
-      throw new IllegalArgumentException("Invalid Cell value: " + value);
+      throw new InvalidCellValueException("Invalid Cell value: " + value);
     }
   }
 

@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import javasudoku.exceptions.InvalidCellValueException;
+
 public class CellTest {
   private Cell c;
  
@@ -16,17 +18,17 @@ public class CellTest {
     return new Cell(value);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = InvalidCellValueException.class)
   public void cellWithNegativeValue() {
     createCell(-1);
   }  
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = InvalidCellValueException.class)
   public void cellWithExceedingMaxValue() {
     createCell(Cell.MAX_VALUE + 1);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = InvalidCellValueException.class)
   public void cellWithLoweringMinValue() {
     createCell(Cell.MIN_VALUE - 1);  
   }
@@ -37,19 +39,19 @@ public class CellTest {
     assertEquals(Cell.EMPTY_VALUE, c.getValue());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = InvalidCellValueException.class)
   public void setValueWithBelowMinValue() {
     c = createCell();
     c.setValue(Cell.MIN_VALUE - 1);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = InvalidCellValueException.class)
   public void setValueWithAboveMaxValue() {
     c = createCell();
     c.setValue(Cell.MAX_VALUE + 1);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = InvalidCellValueException.class)
   public void setValueWithNegativeValue() {
     c = createCell();
     c.setValue(-1);
