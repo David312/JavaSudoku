@@ -1,44 +1,30 @@
 package javasudoku.entities;
 
-import javasudoku.exceptions.InvalidCellValueException;
-
-public class Cell {
-  public static final int MIN_VALUE = 0;
-  public static final int MAX_VALUE = 9;
-  public static final int EMPTY_VALUE = 0;
+public class Cell<T> {
   
   private static final String FORMAT = "[%s]";
 
-  private int value;
+  private T value;
 
   public Cell() {
-    this(EMPTY_VALUE);
+    this(null);
   }
 
-  public Cell(int value) {
-    checkValue(value);
+  public Cell(T value) {
     this.value = value;
   }
 
-  private void checkValue(int value) {
-    if (value < MIN_VALUE || value > MAX_VALUE) {
-      throw new InvalidCellValueException("Invalid Cell value: " + value);
-    }
-  }
-
-  public int getValue() {
+  public T getValue() {
     return this.value;
   }
 
-  public void setValue(int value) {
-    checkValue(value);
+  public void setValue(T value) {
     this.value = value;
   }
 
   @Override
   public String toString() {
-    String strValue = this.value != EMPTY_VALUE ? ""+this.value : " ";
-    return String.format(FORMAT, strValue);
+    return String.format(FORMAT, this.value);
   }
 
   @Override 
@@ -50,8 +36,9 @@ public class Cell {
       return true;
     }
     else {
-      Cell other = (Cell) o;
-      return this.value == other.getValue();
+      Cell<?> other = (Cell<?>) o;
+      return this.value == null ? 
+        other.getValue() == null : this.value.equals(other.getValue());
     }
   }
 }

@@ -6,21 +6,32 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javasudoku.exceptions.InvalidBoardLocationException;
-import javasudoku.exceptions.InvalidCellValueException;
 
 public class BoardTest {
-  private Board b;
+  private Board<Integer> b;
+  private final int rows = 5;
+  private final int columns = 5;
 
   @Before
   public void setup() {
-    b = new Board();
+    b = new Board<Integer>(rows, columns);
+  }
+ 
+  @Test(expected = IllegalArgumentException.class)
+  public void checkConstructorRowParameterIsChecked() {
+    Board<Integer> b = new Board<Integer>(0, columns);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void checkConstructorColumnsParameterIsChecked() {
+    Board<Integer> b = new Board<Integer>(rows, 0);
   }
 
   @Test
   public void checkCellsAreEmptyInAEmptyBoard() {
-    Cell emptyCell = new Cell();
-    for(int i = 0; i < Board.ROWS; i++) {
-      for(int j = 0; j < Board.COLUMNS; j++) {
+    Cell<Integer> emptyCell = new Cell<Integer>();
+    for(int i = 0; i < b.getRowsNumber(); i++) {
+      for(int j = 0; j < b.getColumnsNumber(); j++) {
         assertEquals(emptyCell.getValue(), b.getCellValue(i,j));
       }
     }
@@ -38,14 +49,14 @@ public class BoardTest {
 
   @Test
   public void checkGetCellValueWithValidLocation() {
-    Cell emptyCell = new Cell();
+    Cell<Integer> emptyCell = new Cell<Integer>();
     assertEquals(emptyCell.getValue(), b.getCellValue(1, 1));
   }
 
   @Test
   public void checkSetCellValueValidLocation() {
     b.setCellValue(1,1,1);
-    assertEquals(1, b.getCellValue(1,1));
+    assertEquals(Integer.valueOf(1), b.getCellValue(1,1));
   }
 
   @Test(expected = InvalidBoardLocationException.class)
@@ -56,10 +67,5 @@ public class BoardTest {
   @Test(expected = InvalidBoardLocationException.class)
   public void checkSetCellValueInvalidColumn() {
     b.setCellValue(1, -1, 1);
-  }
-
-  @Test(expected = InvalidCellValueException.class)
-  public void checkSetCellValueInvalidValue() {
-    b.setCellValue(1, 1, Cell.MIN_VALUE - 1);
   }
 }
