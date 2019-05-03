@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import javasudoku.exceptions.ValueAlreadySetException;
+import javasudoku.exceptions.InmutableCellModificationException;
 
 public class InmutableCellTest {
   private InmutableCell<Integer> c;
@@ -34,14 +34,14 @@ public class InmutableCellTest {
     assertTrue(c.isValueSet());
   }
 
-  @Test(expected = ValueAlreadySetException.class)
+  @Test(expected = InmutableCellModificationException.class)
   public void checkCannotSetValueTwice() {
     c = new InmutableCell<>();
     c.setValue(0);
     c.setValue(0);
   }
 
-  @Test(expected = ValueAlreadySetException.class)
+  @Test(expected = InmutableCellModificationException.class)
   public void checkCannotSetValueWhenPassingValueInConstructor() {
     c = new InmutableCell<>(0);
     c.setValue(0);

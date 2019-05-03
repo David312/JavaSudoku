@@ -1,6 +1,6 @@
 package javasudoku.entities;
 
-import javasudoku.exceptions.ValueAlreadySetException;
+import javasudoku.exceptions.InmutableCellModificationException;
 
 public class InmutableCell<T> extends Cell<T> {
 
@@ -23,7 +23,7 @@ public class InmutableCell<T> extends Cell<T> {
   @Override
   public void setValue(T value) {
     if (isValueSet()) {
-      throw new ValueAlreadySetException();
+      throw new InmutableCellModificationException();
     }
     super.setValue(value);
     this.valueSet = true;
