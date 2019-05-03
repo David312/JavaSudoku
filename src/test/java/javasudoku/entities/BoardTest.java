@@ -19,12 +19,12 @@ public class BoardTest {
  
   @Test(expected = IllegalArgumentException.class)
   public void checkConstructorRowParameterIsChecked() {
-    Board<Integer> b = new Board<Integer>(0, columns);
+    new Board<Integer>(0, columns);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void checkConstructorColumnsParameterIsChecked() {
-    Board<Integer> b = new Board<Integer>(rows, 0);
+    new Board<Integer>(rows, 0);
   }
 
   @Test
