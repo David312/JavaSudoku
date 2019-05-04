@@ -52,6 +52,14 @@ public class Board<T> {
     cells.get(row).get(column).setValue(value);
   }
 
+  public void setCell(int row, int column, Cell<T> cell) {
+    if (cell == null) {
+      throw new IllegalArgumentException();
+    }
+    checkBoardLocation(row, column);
+    cells.get(row).set(column, cell);    
+  }
+
   private void checkBoardLocation(int row, int column) {
     if (row < MIN_ROW || row > rows || column < MIN_COLUMN || column > columns) {
       throw new InvalidBoardLocationException(

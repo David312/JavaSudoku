@@ -68,4 +68,25 @@ public class BoardTest {
   public void checkSetCellValueInvalidColumn() {
     b.setCellValue(1, -1, 1);
   }
+  
+  @Test
+  public void checkSetCellValidLocation() {
+    b.setCell(1, 1, new Cell<>(1));
+    assertEquals(Integer.valueOf(1), b.getCellValue(1,1));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void checkSetCellWithNullInValidLocation() {
+    b.setCell(1, 1, null);
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkSetCellInvalidRow() {
+    b.setCell(-1, 1, new Cell<>(1));
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkSetCellInvalidColumn() {
+    b.setCell(1, -1, new Cell<>(1));
+  }
 }
