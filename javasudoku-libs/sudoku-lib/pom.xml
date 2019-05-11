@@ -14,12 +14,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.david312</groupId>
       <artifactId>board-lib</artifactId>
       <version>1.0-SNAPSHOT</version>
