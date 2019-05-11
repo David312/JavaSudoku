@@ -2,6 +2,7 @@ package javasudoku.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javasudoku.exceptions.InvalidBoardLocationException;
 
@@ -61,10 +62,32 @@ public class Board<T> {
   }
 
   private void checkBoardLocation(int row, int column) {
-    if (row < MIN_ROW || row > rows || column < MIN_COLUMN || column > columns) {
-      throw new InvalidBoardLocationException(
-        "Invalid board location: row -> " + row + " column -> " + column);
+    checkRowLocation(row);
+    checkColumnLocation(column);
+  }
+
+  private void checkRowLocation(int row) {
+    if (row < MIN_ROW || row > rows) {
+      throw new InvalidBoardLocationException("Invalid row -> " + row);
     }
   }
+
+  private void checkColumnLocation(int column) {
+    if (column < MIN_COLUMN || column > columns) {
+      throw new InvalidBoardLocationException("Invalid column -> " + column);
+    }
+  }
+
+public List<Cell<T>> getRow(int row) {
+  checkRowLocation(row);
+  return this.cells.get(row);
+}
+
+public List<Cell<T>> getColumn(int column) {
+  checkColumnLocation(column); 
+  return this.cells.stream()
+    .map(l -> l.get(column))
+    .collect(Collectors.toList());
+}
   
 }

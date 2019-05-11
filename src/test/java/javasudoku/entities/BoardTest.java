@@ -2,6 +2,8 @@ package javasudoku.entities;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -89,4 +91,56 @@ public class BoardTest {
   public void checkSetCellInvalidColumn() {
     b.setCell(1, -1, new Cell<>(1));
   }
+
+  @Test
+  public void checkGetRow() {
+    final int N = columns;
+    for (int i = 0; i < N; i++) {
+      b.setCellValue(0, i, i);
+    }
+    
+    List<Cell<Integer>> row = b.getRow(0);
+
+    for (int i = 0; i < N; i++) {
+      assertEquals(Integer.valueOf(i), row.get(i).getValue());
+    }
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkGetRowWithNegativeRow() {
+    b.getRow(-1);
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkGetRowWithHigerThanMaximumRow() {
+    b.getRow(rows + 1);
+  }
+
+  @Test 
+  public void checkGetColumn() {
+    final int M = rows;
+    for (int i = 0; i < M; i++) {
+      b.setCellValue(i, 0, i);
+    }
+
+    List<Cell<Integer>> column = b.getColumn(0);
+
+    for (int i = 0; i < M; i++) {
+      assertEquals(Integer.valueOf(i), column.get(i).getValue());
+    }
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkGetColumnWithNegativeColumn() {
+    b.getColumn(-1);  
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkGetColumnWithHigherThanMaximumColumn() {
+    b.getColumn(columns + 1);
+  }
+
+  
+
+
 }
