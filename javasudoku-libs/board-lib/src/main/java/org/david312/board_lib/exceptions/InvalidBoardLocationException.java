@@ -1,4 +1,4 @@
-package org.david312.board.exceptions;
+package org.david312.board_lib.exceptions;
 
 public class InvalidBoardLocationException extends BoardException {
 

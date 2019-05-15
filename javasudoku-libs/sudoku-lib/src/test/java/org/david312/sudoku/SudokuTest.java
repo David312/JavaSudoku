@@ -4,26 +4,34 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
+import org.david312.board_lib.boards.Board;
+import org.david312.board_lib.boards.Location;
+import org.david312.board_lib.factories.AbstractFactory;
+import org.david312.board_lib.factories.BoardFactory;
 import org.junit.Test;
 
-import org.david312.board.Board;
-import org.david312.board.exceptions.InvalidBoardLocationException;
+import org.david312.board_lib.exceptions.InvalidBoardLocationException;
 import org.david312.sudoku.exceptions.InvalidSudokuPositionModificationException;
 
 public class SudokuTest {
   private final int MAX_VALUE = 10;
+  private final BoardFactory boardFactory = AbstractFactory.getBoardFactory();
   private Sudoku s;
 
   private Board<Integer> makeEmptyBoard() {
-    Board<Integer> b = new Board<>(Sudoku.ROWS_NUMBER, Sudoku.COLUMNS_NUMBER);
+    Board<Integer> b = boardFactory.getBoard(Sudoku.ROWS_NUMBER, Sudoku.COLUMNS_NUMBER);
     
-    for (int i = 0; i < Sudoku.ROWS_NUMBER; i++) {
-      for (int j = 0; j < Sudoku.COLUMNS_NUMBER; j++) {
-        b.setCellValue(i, j, 0);
+    for (int x = 0; x < Sudoku.ROWS_NUMBER; x++) {
+      for (int y = 0; y < Sudoku.COLUMNS_NUMBER; y++) {
+        b.setValueAt(makeLocation(x, y), 0);
       }
     }
 
     return b;
+  }
+
+  private Location makeLocation(int x, int y) {
+    return Location.at(x, y);
   }
 
   private Sudoku makeEmptySudoku() {
@@ -31,12 +39,12 @@ public class SudokuTest {
   }
 
   private Board<Integer> makeRandomBoard() {
-    Random r = new Random();
+    Random rand = new Random();
     Board<Integer> b = makeEmptyBoard();
 
-    for (int i = 0; i < b.getRowsNumber(); i++) {
-      for(int j = 0; j < b.getColumnsNumber(); j++) {
-        b.setCellValue(i, j, r.nextInt(MAX_VALUE));
+    for (int r = 0; r < b.getTotalRows(); r++) {
+      for(int c = 0; c < b.getTotalColumns(); c++) {
+        b.setValueAt(makeLocation(r, c), rand.nextInt(MAX_VALUE));
       }
     }
 
@@ -56,32 +64,32 @@ public class SudokuTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void createSudokuWithInvalidRows() {
-    new Sudoku(new Board<>(5, Sudoku.COLUMNS_NUMBER));
+    new Sudoku(boardFactory.getBoard(5, Sudoku.COLUMNS_NUMBER));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void createSudokuWithInvalidColumns() {
-    new Sudoku(new Board<>(Sudoku.ROWS_NUMBER, 5));
+    new Sudoku(boardFactory.getBoard(Sudoku.ROWS_NUMBER, 5));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void createSudokuWithNullBoardValue() {
     Board<Integer> b = makeEmptyBoard();
-    b.setCellValue(5, 5, null);
+    b.setValueAt(makeLocation(5, 5), null);
     new Sudoku(b);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void createSudokuWithInvalidGreaterBoardValue() {
     Board<Integer> b = makeEmptyBoard();
-    b.setCellValue(5, 5, 20);
+    b.setValueAt(makeLocation(5, 5), 20);
     new Sudoku(b);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void createSudokuWithInvalidLowerBoardValue() {
     Board<Integer> b = makeEmptyBoard();
-    b.setCellValue(5, 5, -1);
+    b.setValueAt(makeLocation(5, 5), -1);
     new Sudoku(b);
   }
 
@@ -92,7 +100,7 @@ public class SudokuTest {
 
     for (int row = 0; row < Sudoku.ROWS_NUMBER; row++) {
       for (int column = 0; column < Sudoku.COLUMNS_NUMBER; column++) {
-        assertEquals(b.getCellValue(row, column), Integer.valueOf(s.getValueAt(row, column)));
+        assertEquals(b.getValueAt(makeLocation(row, column)), Integer.valueOf(s.getValueAt(row, column)));
       }
     }
   }
@@ -120,7 +128,7 @@ public class SudokuTest {
   @Test(expected = InvalidSudokuPositionModificationException.class)
   public void checkCannotModifyPresetCell() {
     Board<Integer> b = makeEmptyBoard();
-    b.setCellValue(5, 5, 5);
+    b.setValueAt(makeLocation(5, 5), 5);
     s = new Sudoku(b);
     s.setValueAt(5, 5, 3);
   }
