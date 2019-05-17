@@ -53,13 +53,23 @@ public class BoardTest {
   }
 
   @Test(expected = InvalidBoardLocationException.class)
-  public void checkGetTileValueWithInvalidRow() {
+  public void checkGetTileValueWithInvalidMinRow() {
     b.getValueAt(invalidXLocation);
   }
 
   @Test(expected = InvalidBoardLocationException.class)
-  public void checkGetTileValueWithInvalidColumn() {
+  public void checkGetTileValueWithInvalidMinColumn() {
     b.getValueAt(invalidYLocation);
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkGetTileValueWithInvalidMaxRow() {
+    b.getValueAt(new Location(b.getTotalRows() + 1, 1));
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkGetTileValueWithInvalidMaxColumn() {
+    b.getValueAt(new Location(1, b.getTotalColumns() + 1));
   }
 
   @Test
@@ -74,13 +84,24 @@ public class BoardTest {
   }
 
   @Test(expected = InvalidBoardLocationException.class)
-  public void checkSetTileValueInvalidRow() {
+  public void checkSetTileValueInvalidMinRow() {
     b.setValueAt(invalidXLocation, 1);
   }
 
   @Test(expected = InvalidBoardLocationException.class)
-  public void checkSetTileValueInvalidColumn() {
+  public void checkSetTileValueInvalidMinColumn() {
     b.setValueAt(invalidYLocation, 1);
+  }
+
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkSetTileValueInvalidMaxRow() {
+    b.setValueAt(new Location(b.getTotalRows() + 1, 1), 1);
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkSetTileValueInvalidMaxColumn() {
+    b.setValueAt(new Location(1, b.getTotalColumns() + 1), 1);
   }
 
   @Test
@@ -95,12 +116,22 @@ public class BoardTest {
   }
 
   @Test(expected = InvalidBoardLocationException.class)
-  public void checkSetTileInvalidRow() {
+  public void checkSetTileInvalidMinRow() {
     b.setTileType(invalidXLocation, TileType.NORMAL);
   }
 
   @Test(expected = InvalidBoardLocationException.class)
-  public void checkSetTileInvalidColumn() {
+  public void checkSetTileInvalidMinColumn() {
     b.setTileType(invalidYLocation, TileType.NORMAL);
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkSetTileInvalidMaxRow() {
+    b.setTileType(new Location(b.getTotalRows() + 1, 1), TileType.NORMAL);
+  }
+
+  @Test(expected = InvalidBoardLocationException.class)
+  public void checkSetTileInvalidMaxColumn() {
+    b.setTileType(new Location(1, b.getTotalColumns() + 1), TileType.NORMAL);
   }
 }
